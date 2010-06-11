@@ -1,0 +1,9 @@
+// $Id: config.w32 291957 2009-12-10 17:13:14Z cyberspice $
+// vim:ft=javascript
+
+ARG_ENABLE("hello_world", "Enable the hello world extension", "no");
+
+if (PHP_HELLO_WORLD != "no") {
+	EXTENSION("hello_world", "hello_world.c");
+	AC_DEFINE('HAVE_HELLO_WORLD', 1, 'hello world support');
+}

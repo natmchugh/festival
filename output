@@ -1,0 +1,32 @@
+/bin/bash /home/nat/festival/libtool --mode=compile cc  -I. -I/home/nat/festival -DPHP_ATOM_INC -I/home/nat/festival/include -I/home/nat/festival/main -I/home/nat/festival -I/usr/include/php5 -I/usr/include/php5/main -I/usr/include/php5/TSRM -I/usr/include/php5/Zend -I/usr/include/php5/ext -I/usr/include/php5/ext/date/lib -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/festival -I/usr/lib/speech_tools/include  -DHAVE_CONFIG_H  -g -O2   -c /home/nat/festival/festival.c -o festival.lo 
+libtool: compile:  cc -I. -I/home/nat/festival -DPHP_ATOM_INC -I/home/nat/festival/include -I/home/nat/festival/main -I/home/nat/festival -I/usr/include/php5 -I/usr/include/php5/main -I/usr/include/php5/TSRM -I/usr/include/php5/Zend -I/usr/include/php5/ext -I/usr/include/php5/ext/date/lib -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/festival -I/usr/lib/speech_tools/include -DHAVE_CONFIG_H -g -O2 -c /home/nat/festival/festival.c  -fPIC -DPIC -o .libs/festival.o
+/bin/bash /home/nat/festival/libtool --mode=link cc -DPHP_ATOM_INC -I/home/nat/festival/include -I/home/nat/festival/main -I/home/nat/festival -I/usr/include/php5 -I/usr/include/php5/main -I/usr/include/php5/TSRM -I/usr/include/php5/Zend -I/usr/include/php5/ext -I/usr/include/php5/ext/date/lib -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/festival -I/usr/lib/speech_tools/include  -DHAVE_CONFIG_H  -g -O2  -Wl,-rpath,/lib -L/lib -o festival.la -export-dynamic -avoid-version -prefer-pic -module -rpath /home/nat/festival/modules  festival.lo 
+libtool: link: rm -fr  .libs/festival.la .libs/festival.lai .libs/festival.so
+libtool: link: cc -shared  .libs/festival.o   -L/lib  -Wl,-rpath -Wl,/lib   -Wl,-soname -Wl,festival.so -o .libs/festival.so
+libtool: link: ( cd ".libs" && rm -f "festival.la" && ln -s "../festival.la" "festival.la" )
+/bin/bash /home/nat/festival/libtool --mode=install cp ./festival.la /home/nat/festival/modules
+libtool: install: cp ./.libs/festival.so /home/nat/festival/modules/festival.so
+libtool: install: cp ./.libs/festival.lai /home/nat/festival/modules/festival.la
+libtool: finish: PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/sbin" ldconfig -n /home/nat/festival/modules
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /home/nat/festival/modules
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+
+Build complete.
+Don't forget to run 'make test'.
+

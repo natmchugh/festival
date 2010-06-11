@@ -1,0 +1,8 @@
+festival_php.lo: /home/nat/festival_php/festival_php.cpp
+	$(LIBTOOL) --mode=compile $(CXX)  -I. -I/home/nat/festival_php $(COMMON_FLAGS) $(CXXFLAGS_CLEAN) $(EXTRA_CXXFLAGS)  -c /home/nat/festival_php/festival_php.cpp -o festival_php.lo 
+$(phplibdir)/festival_php.la: ./festival_php.la
+	$(LIBTOOL) --mode=install cp ./festival_php.la $(phplibdir)
+
+./festival_php.la: $(shared_objects_festival_php) $(FESTIVAL_PHP_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_festival_php) $(FESTIVAL_PHP_SHARED_LIBADD)
+

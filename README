@@ -1,0 +1,12 @@
+Festival PHP is a PHP extension designed to offer the basic API of the festival text to speach library described here http://www.cstr.ed.ac.uk/projects/festival/manual/festival_28.html#SEC132
+
+Instalation
+----------------------------
+Currently will only Ubuntu 10.4 lucid lynx due to some static linking
+sudo apt-get install festival festival-dev
+cd festival_php
+phpize
+./confogure --enable-festival_php
+make
+sudo make install
+php -d extention=festival_php.so -r 'festival('hello I am PHP');'
