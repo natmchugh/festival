@@ -6,7 +6,7 @@ Currently will only compile on Ubuntu 10.4 lucid lynx due to some static linking
 sudo apt-get install festival festival-dev
 cd festival_php
 phpize
-./confogure --enable-festival_php
+./configure --enable-festival_php
 make
 sudo make install
 
