@@ -2,8 +2,8 @@ dnl
 dnl $Id $
 dnl 
 
-PHP_ARG_ENABLE(festival_php, whether to enable the hello world extension,
-[  --enable-festival_php       Enable hello world support])
+PHP_ARG_ENABLE(festival_php, whether to enable the festival extension,
+[  --enable-festival_php       Enable festival support])
 
 if test "$PHP_FESTIVAL" != "no"; then
 
