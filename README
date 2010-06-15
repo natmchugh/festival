@@ -9,4 +9,10 @@ phpize
 ./confogure --enable-festival_php
 make
 sudo make install
-php -d extention=festival_php.so -r 'festival('hello I am PHP');'
+
+Usage
+----------------------------
+
+php -d extention=festival_php.so -r 'festival_say_text('hello I am PHP');'
+
+php -d extention=festival_php.so -r 'festival_say_file('/etc/motd');'

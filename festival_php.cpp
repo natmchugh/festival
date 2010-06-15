@@ -26,9 +26,11 @@ extern "C" {
 }
 
 #include<festival.h>
-/* {{{ proto resource festival()
-   Outputs "Hello World" on standard out */
-PHP_FUNCTION(festival)
+
+
+/* {{{ proto resource festival_say_text()
+   Says the passed in text  */
+PHP_FUNCTION(festival_say_text)
 {
 int heap_size=210000;
 int load_init_files=1;
@@ -48,11 +50,35 @@ RETURN_TRUE;
 }
 /* }}} */
 
+/* {{{ proto resource festival_say_file()
+   Says the passed in text  */
+PHP_FUNCTION(festival_say_file)
+{
+int heap_size=210000;
+int load_init_files=1;
+char * filename = NULL;
+int    filename_len = 0;
+long   count = 1;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &filename, &filename_len, &count) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
+        RETURN_FALSE;
+    }
+
+festival_initialize(load_init_files,heap_size);
+festival_say_file(filename);
+festival_wait_for_spooler();
+RETURN_TRUE;
+}
+/* }}} */
+
+
 ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 static function_entry festival_php_functions[] = {
-	PHP_FE(festival, festival_php_args)
+	PHP_FE(festival_say_text, festival_php_args)
+	PHP_FE(festival_say_file, festival_php_args)
 
 	/* End of functions */
 	{NULL, NULL, NULL}
