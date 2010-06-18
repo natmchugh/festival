@@ -20,12 +20,13 @@
 #include "config.h"
 #endif
 
-extern "C" {
 #include "php.h"
+extern "C" {
 #include "festival_php.h"
 }
 
 #include<festival.h>
+using namespace std;
 
 
 /* {{{ proto resource festival_say_text()
@@ -34,18 +35,17 @@ PHP_FUNCTION(festival_say_text)
 {
 int heap_size=210000;
 int load_init_files=1;
-char * name = NULL;
-int    name_len = 0;
+char * text = NULL;
+int    text_len = 0;
 long   count = 1;
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &name, &name_len, &count) == FAILURE) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &text, &text_len, &count) == FAILURE) {
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
 
 festival_initialize(load_init_files,heap_size);
-festival_say_text(name);
-festival_wait_for_spooler();
+festival_say_text(text);
 RETURN_TRUE;
 }
 /* }}} */
@@ -72,6 +72,29 @@ RETURN_TRUE;
 }
 /* }}} */
 
+/* {{{ proto resource festival_say_file()
+   Says the passed in text  */
+PHP_FUNCTION(festival_text_to_wave)
+{
+int heap_size=210000;
+int load_init_files=1;
+char * text = NULL;
+int    text_len = 0;
+long   count = 1;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &text, &text_len, &count) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
+        RETURN_FALSE;
+    }
+EST_Wave wave;
+festival_initialize(load_init_files,heap_size);
+festival_text_to_wave(text,wave);
+wave.save("wave.wav","riff");
+RETURN_TRUE;
+}
+/* }}} */
+
+
 
 ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -79,15 +102,15 @@ ZEND_END_ARG_INFO()
 static function_entry festival_php_functions[] = {
 	PHP_FE(festival_say_text, festival_php_args)
 	PHP_FE(festival_say_file, festival_php_args)
-
+        PHP_FE(festival_text_to_wave, festival_php_args)
 	/* End of functions */
 	{NULL, NULL, NULL}
 };
 
-PHP_MINFO_FUNCTION(festival)
+PHP_MINFO_FUNCTION(festival_php)
 {
 	char version[256];
-/*	php_info_print_table_start();
+	/* php_info_print_table_start();
 	php_info_print_table_header(2, "festival php support", "enabled");
 	php_info_print_table_row(2, "version", FESTIVAL_PHP_VERSION);
 	php_info_print_table_end(); */
@@ -97,14 +120,15 @@ zend_module_entry festival_php_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"festival_php",
 	festival_php_functions,
-	NULL,
-	NULL,
+        NULL,
+        NULL,
 	NULL,	
 	NULL,
-	PHP_MINFO(festival),
+	PHP_MINFO(festival_php),
 	FESTIVAL_PHP_VERSION,
 	STANDARD_MODULE_PROPERTIES
 };
+
 
 #ifdef COMPILE_DL_FESTIVAL_PHP
 BEGIN_EXTERN_C()
