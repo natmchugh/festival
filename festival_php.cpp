@@ -21,6 +21,7 @@
 #endif
 
 #include "php.h"
+#include "ext/standard/info.h"
 extern "C" {
 #include "festival_php.h"
 }
@@ -110,10 +111,10 @@ static function_entry festival_php_functions[] = {
 PHP_MINFO_FUNCTION(festival_php)
 {
 	char version[256];
-	/* php_info_print_table_start();
+	php_info_print_table_start();
 	php_info_print_table_header(2, "festival php support", "enabled");
 	php_info_print_table_row(2, "version", FESTIVAL_PHP_VERSION);
-	php_info_print_table_end(); */
+	php_info_print_table_end();
 }
 
 zend_module_entry festival_php_module_entry = {
