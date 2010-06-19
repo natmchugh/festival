@@ -117,14 +117,33 @@ PHP_MINFO_FUNCTION(festival_php)
 	php_info_print_table_end();
 }
 
+zend_class_entry *php_festivalphp_fc_entry;
+#define PHP_FESTIVAL_PHP_FC_NAME "Festival_FestivalClass"
+static function_entry php_festivalphp_fc_functions [] = {
+      {NULL, NULL, NULL}
+};
+
+
+PHP_MINIT_FUNCTION(festival_php)
+{
+      zend_class_entry ce;
+      INIT_CLASS_ENTRY(ce, PHP_FESTIVAL_PHP_FC_NAME,
+                       php_festivalphp_fc_functions);
+      php_festivalphp_fc_entry =
+            zend_register_internal_class(&ce TSRMLS_CC);
+      return SUCCESS;
+}
+
+
+
 zend_module_entry festival_php_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"festival_php",
 	festival_php_functions,
-        NULL,
-        NULL,
-	NULL,	
-	NULL,
+        PHP_MINIT(festival_php), /* MINIT */
+        NULL, /* MSHUTDOWN */
+	NULL,	/* RINIT */
+	NULL,   /* RSHUTDOWN */
 	PHP_MINFO(festival_php),
 	FESTIVAL_PHP_VERSION,
 	STANDARD_MODULE_PROPERTIES
