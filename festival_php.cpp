@@ -30,9 +30,10 @@ extern "C" {
 using namespace std;
 
 
+
 /* {{{ proto resource festival_say_text()
    Says the passed in text  */
-PHP_FUNCTION(festival_say_text)
+PHP_METHOD(Festival_FestivalClass, sayText)
 {
 int heap_size=210000;
 int load_init_files=1;
@@ -95,13 +96,26 @@ RETURN_TRUE;
 }
 /* }}} */
 
+PHP_METHOD(Festival_FestivalClass, __construct) {
+      /*
+char * text = NULL;
+int    text_len = 0;
+long   count = 1;
 
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bi", &text, &text_len, &count) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
+        RETURN_FALSE;
+    }
+      */
+      
+      
+      
+}
 
 ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 static function_entry festival_php_functions[] = {
-	PHP_FE(festival_say_text, festival_php_args)
 	PHP_FE(festival_say_file, festival_php_args)
         PHP_FE(festival_text_to_wave, festival_php_args)
 	/* End of functions */
@@ -119,10 +133,12 @@ PHP_MINFO_FUNCTION(festival_php)
 
 zend_class_entry *php_festivalphp_fc_entry;
 #define PHP_FESTIVAL_PHP_FC_NAME "Festival_FestivalClass"
-static function_entry php_festivalphp_fc_functions [] = {
+static zend_function_entry php_festivalphp_fc_functions [] = {
+      PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
+            
       {NULL, NULL, NULL}
 };
-
 
 PHP_MINIT_FUNCTION(festival_php)
 {
@@ -133,8 +149,6 @@ PHP_MINIT_FUNCTION(festival_php)
             zend_register_internal_class(&ce TSRMLS_CC);
       return SUCCESS;
 }
-
-
 
 zend_module_entry festival_php_module_entry = {
 	STANDARD_MODULE_HEADER,
