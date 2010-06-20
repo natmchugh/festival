@@ -12,7 +12,5 @@ sudo make install
 
 Usage
 ----------------------------
-
-php -d extention=festival_php.so -r 'festival_say_text('hello I am PHP');'
-
-php -d extention=festival_php.so -r 'festival_say_file('/etc/motd');'
+$festObj = new Festival_FestivalClass();
+$festObj->sayText('php '.phpversion());
