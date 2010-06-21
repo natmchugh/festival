@@ -35,8 +35,6 @@ using namespace std;
    Says the passed in text  */
 PHP_METHOD(Festival_FestivalClass, sayText)
 {
-int heap_size=210000;
-int load_init_files=1;
 char * text = NULL;
 int    text_len = 0;
 long   count = 1;
@@ -45,8 +43,6 @@ long   count = 1;
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
-
-festival_initialize(load_init_files,heap_size);
 festival_say_text(text);
 RETURN_TRUE;
 }
@@ -54,10 +50,8 @@ RETURN_TRUE;
 
 /* {{{ proto resource festival_say_file()
    Says the passed in text  */
-PHP_FUNCTION(festival_say_file)
+PHP_METHOD(Festival_FestivalClass, sayFile)
 {
-int heap_size=210000;
-int load_init_files=1;
 char * filename = NULL;
 int    filename_len = 0;
 long   count = 1;
@@ -67,7 +61,6 @@ long   count = 1;
         RETURN_FALSE;
     }
 
-festival_initialize(load_init_files,heap_size);
 festival_say_file(filename);
 festival_wait_for_spooler();
 RETURN_TRUE;
@@ -75,11 +68,9 @@ RETURN_TRUE;
 /* }}} */
 
 /* {{{ proto resource festival_say_file()
-   Says the passed in text  */
-PHP_FUNCTION(festival_text_to_wave)
+         Says the passed in text  */
+PHP_METHOD(Festival_FestivalClass, textToWave)
 {
-int heap_size=210000;
-int load_init_files=1;
 char * text = NULL;
 int    text_len = 0;
 long   count = 1;
@@ -89,7 +80,6 @@ long   count = 1;
         RETURN_FALSE;
     }
 EST_Wave wave;
-festival_initialize(load_init_files,heap_size);
 festival_text_to_wave(text,wave);
 wave.save("wave.wav","riff");
 RETURN_TRUE;
@@ -107,8 +97,9 @@ long   count = 1;
         RETURN_FALSE;
     }
       */
-      
-      
+    int heap_size=210000;
+    int load_init_files=1; 
+    festival_initialize(load_init_files,heap_size);  
       
 }
 
@@ -116,8 +107,6 @@ ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 static function_entry festival_php_functions[] = {
-	PHP_FE(festival_say_file, festival_php_args)
-        PHP_FE(festival_text_to_wave, festival_php_args)
 	/* End of functions */
 	{NULL, NULL, NULL}
 };
@@ -136,6 +125,8 @@ zend_class_entry *php_festivalphp_fc_entry;
 static zend_function_entry php_festivalphp_fc_functions [] = {
       PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(Festival_FestivalClass, sayFile, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(Festival_FestivalClass, textToWave, NULL, ZEND_ACC_PUBLIC)
             
       {NULL, NULL, NULL}
 };
