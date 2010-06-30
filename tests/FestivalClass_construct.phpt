@@ -2,7 +2,7 @@
 Test the Festival construtor
 --FILE--
 <?php
-$festObj = new Festival_FestivalClass();
+$festObj = new Festival_FestivalClass(true, 210000);
 var_dump($festObj);
 
 --EXPECTF--

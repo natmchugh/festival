@@ -87,18 +87,16 @@ RETURN_TRUE;
 /* }}} */
 
 PHP_METHOD(Festival_FestivalClass, __construct) {
-      /*
-char * text = NULL;
-int    text_len = 0;
+bool load_init_files = TRUE;
+int load_init_files_len = 0;
+int heap_size = 210000;
+int   heap_size_len = 0;
 long   count = 1;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bi", &text, &text_len, &count) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &load_init_files, &load_init_files_len, &heap_size, &heap_size_len, &count) == FAILURE) {
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
-      */
-    int heap_size=210000;
-    int load_init_files=1; 
     festival_initialize(load_init_files,heap_size);  
       
 }
