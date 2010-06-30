@@ -103,10 +103,32 @@ long   count = 1;
       
 }
 
+
+/* {{{ proto resource evalCommand
+      */
+PHP_METHOD(Festival_FestivalClass, evalCommand)
+{
+char * command = NULL;
+int    command_len = 0;
+long   count = 1;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &command, &command_len, &count) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
+        RETURN_FALSE;
+    }
+char est_str[command_len+2];
+strcpy (est_str,"(");
+strcat (est_str,command);
+strcat (est_str,")");
+festival_eval_command(est_str);
+RETURN_TRUE;
+}
+/* }}} */
+
 ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-static function_entry festival_php_functions[] = {
+static zend_function_entry festival_php_functions[] = {
 	/* End of functions */
 	{NULL, NULL, NULL}
 };
@@ -127,6 +149,7 @@ static zend_function_entry php_festivalphp_fc_functions [] = {
       PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, sayFile, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, textToWave, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(Festival_FestivalClass, evalCommand, NULL, ZEND_ACC_PUBLIC)
             
       {NULL, NULL, NULL}
 };

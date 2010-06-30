@@ -2,7 +2,8 @@
 Test the Festival say Text Method
 --FILE--
 <?php
-error_reporting(E_ALL ^ E_DEPRECATED);
 $festObj = new Festival_FestivalClass();
-$festObj->sayText('php '.phpversion());
+$return = $festObj->sayText('php '.phpversion());
+var_dump($return);
 --EXPECTF--
+bool(true)
