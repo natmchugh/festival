@@ -22,6 +22,7 @@
 
 #include "php.h"
 #include "ext/standard/info.h"
+#include "php_open_temporary_file.h"
 extern "C" {
 #include "festival_php.h"
 }
@@ -73,16 +74,18 @@ PHP_METHOD(Festival_FestivalClass, textToWave)
 {
 char * text = NULL;
 int    text_len = 0;
+char * filename = NULL;
+int    filename_len = 0;
 long   count = 1;
 
-  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &text, &text_len, &count) == FAILURE) {
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &text, &text_len, &filename, &filename_len, &count) == FAILURE) {
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
 EST_Wave wave;
 festival_text_to_wave(text,wave);
-wave.save("wave.wav","riff");
-RETURN_TRUE;
+wave.save(filename,"riff");
+RETVAL_STRING(filename, 1);
 }
 /* }}} */
 
