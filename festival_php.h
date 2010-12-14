@@ -19,7 +19,7 @@
 #ifndef __FESTIVAL_PHP_H
 #define __FESTIVAL_PHP_H
 
-#define FESTIVAL_PHP_VERSION "0.1.0"
+#define FESTIVAL_PHP_VERSION "0.1.1"
 
 extern zend_module_entry festival_php_module_entry;
 PHP_MINFO_FUNCTION(festival_php);
