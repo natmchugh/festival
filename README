@@ -3,7 +3,7 @@ Festival PHP is a PHP extension designed to offer the basic API of the festival 
 Instalation
 ----------------------------
 Currently will only compile on Ubuntu 10.4 lucid lynx due to some static linking
-sudo apt-get install festival festival-dev
+sudo apt-get install festival festival-dev festvox-don
 cd festival_php
 phpize
 ./configure --enable-festival_php
