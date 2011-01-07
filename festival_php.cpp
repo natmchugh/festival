@@ -26,7 +26,6 @@
 extern "C" {
 #include "festival_php.h"
 }
-
 #include<festival.h>
 using namespace std;
 
@@ -44,8 +43,8 @@ long   count = 1;
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
-festival_say_text(text);
-RETURN_TRUE;
+	festival_say_text(text);
+	RETURN_TRUE;
 }
 /* }}} */
 
@@ -95,14 +94,13 @@ int load_init_files_len = 0;
 int heap_size = 210000;
 int   heap_size_len = 0;
 long   count = 1;
-
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &load_init_files, &load_init_files_len, &heap_size, &heap_size_len, &count) == FAILURE) {
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
-    festival_initialize(load_init_files,heap_size);  
-      
+    festival_initialize(load_init_files,heap_size);
 }
+
 
 
 /* {{{ proto resource evalCommand
@@ -126,11 +124,11 @@ RETURN_TRUE;
 }
 /* }}} */
 
+
 ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 static zend_function_entry festival_php_functions[] = {
-	/* End of functions */
 	{NULL, NULL, NULL}
 };
 
@@ -146,12 +144,11 @@ PHP_MINFO_FUNCTION(festival_php)
 zend_class_entry *php_festivalphp_fc_entry;
 #define PHP_FESTIVAL_PHP_FC_NAME "Festival_FestivalClass"
 static zend_function_entry php_festivalphp_fc_functions [] = {
-      PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
       PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, sayFile, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, textToWave, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, evalCommand, NULL, ZEND_ACC_PUBLIC)
-            
       {NULL, NULL, NULL}
 };
 
