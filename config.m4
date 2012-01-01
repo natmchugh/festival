@@ -2,21 +2,55 @@ dnl
 dnl $Id $
 dnl 
 
-PHP_ARG_ENABLE(festival_php, whether to enable the festival extension,
-[  --enable-festival_php       Enable festival support])
+PHP_ARG_ENABLE(festival,
+[whether to enable the "festival" extension],
+[  --enable-festival_php [=DIR]       Enable "festival" support])
+
+PHP_ARG_WITH(speech-tools-dir,  for festival,
+[  --with-speech-tools-dir[=DIR]   Set the path to Edinburgh Speech tools install prefix.], yes)
 
 if test "$PHP_FESTIVAL" != "no"; then
+	AC_MSG_CHECKING([for festival headers])
+	for i in /usr /usr/lib $PHP_FESTIVAL; do 
+		AC_MSG_CHECKING([looking in $i])
+dnl hmmm sometimes its /includefestival sometimes it /include
+		if test -r $i/include/festival/festival.h; then
+			FESTIVAL_DIR=$i
+			AC_MSG_RESULT(found festival.h in $i)
+		fi
+	done
+fi
+if test "$PHP_SPEECH_TOOLS_DIR" != "no" && test "$PHP_SPEECH_TOOLS_DIR" != "yes"; then
+	if test -r $PHP_SPEECH_TOOLS_DIR/include/EST.h; then
+		EST_DIR=$PHP_SPEECH_TOOLS_DIR
+	fi
+else
+	AC_MSG_CHECKING([for EST headers])
+	for i in /usr /usr/lib /usr/lib/speech_tools ; do 
+		if test -r $i/include/EST.h; then
+			EST_DIR=$i
+			AC_MSG_RESULT(found EST in $i)
+		fi
+	done
+fi		
 
-PHP_SUBST(FESTIVAL_PHP_SHARED_LIBADD)
-PHP_ADD_INCLUDE(/usr/include/festival)
-PHP_ADD_INCLUDE(/usr/lib/speech_tools/include)
-PHP_ADD_LIBRARY_WITH_PATH(Festival, /usr/lib, FESTIVAL_PHP_SHARED_LIBADD)
-PHP_ADD_LIBRARY_WITH_PATH(eststring, /usr/lib, FESTIVAL_PHP_SHARED_LIBADD)
-PHP_ADD_LIBRARY_WITH_PATH(estools, /usr/lib, FESTIVAL_PHP_SHARED_LIBADD)
-PHP_ADD_LIBRARY_WITH_PATH(estbase, /usr/lib, FESTIVAL_PHP_SHARED_LIBADD)
+if test -z "$FESTIVAL_DIR"; then
+	AC_MSG_ERROR(festival.h $FESTIVAL_DIR not found)
+else
+	PHP_ADD_INCLUDE($FESTIVAL_DIR/include/festival)
+	PHP_ADD_LIBRARY_WITH_PATH(Festival, $FESTIVAL_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+fi
 
+if test -z "$EST_DIR"; then
+	AC_MSG_ERROR(EST.h not found)
+else
+	PHP_ADD_INCLUDE($EST_DIR/include)
+	PHP_ADD_LIBRARY_WITH_PATH(estbase, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(estools, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(eststring, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+fi
 
+ PHP_SUBST(FESTIVAL_PHP_SHARED_LIBADD)
  PHP_REQUIRE_CXX()
  PHP_ADD_LIBRARY(stdc++, "", FESTIVAL_PHP_SHARED_LIBADD) 
  PHP_NEW_EXTENSION(festival_php, festival_php.cpp, $ext_shared)
-fi
