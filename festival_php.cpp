@@ -121,29 +121,30 @@ strcat (est_str,command);
 strcat (est_str,")");
 festival_eval_command(est_str);
 RETURN_TRUE;
+/* return; */
 }
 /* }}} */
 
 
-ZEND_BEGIN_ARG_INFO_EX(festival_php_args, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(festival_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-static zend_function_entry festival_php_functions[] = {
+static zend_function_entry festival_functions[] = {
 	{NULL, NULL, NULL}
 };
 
-PHP_MINFO_FUNCTION(festival_php)
+PHP_MINFO_FUNCTION(festival)
 {
 	char version[256];
 	php_info_print_table_start();
-	php_info_print_table_header(2, "festival php support", "enabled");
+	php_info_print_table_header(2, "festival support", "enabled");
 	php_info_print_table_row(2, "version", FESTIVAL_PHP_VERSION);
 	php_info_print_table_end();
 }
 
-zend_class_entry *php_festivalphp_fc_entry;
-#define PHP_FESTIVAL_PHP_FC_NAME "Festival_FestivalClass"
-static zend_function_entry php_festivalphp_fc_functions [] = {
+zend_class_entry *php_festival_fc_entry;
+#define PHP_FESTIVAL_FC_NAME "Festival_FestivalClass"
+static zend_function_entry php_festival_fc_functions [] = {
       PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
       PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
       PHP_ME(Festival_FestivalClass, sayFile, NULL, ZEND_ACC_PUBLIC)
@@ -152,33 +153,33 @@ static zend_function_entry php_festivalphp_fc_functions [] = {
       {NULL, NULL, NULL}
 };
 
-PHP_MINIT_FUNCTION(festival_php)
+PHP_MINIT_FUNCTION(festival)
 {
       zend_class_entry ce;
-      INIT_CLASS_ENTRY(ce, PHP_FESTIVAL_PHP_FC_NAME,
-                       php_festivalphp_fc_functions);
-      php_festivalphp_fc_entry =
+      INIT_CLASS_ENTRY(ce, PHP_FESTIVAL_FC_NAME,
+                       php_festival_fc_functions);
+      php_festival_fc_entry =
             zend_register_internal_class(&ce TSRMLS_CC);
       return SUCCESS;
 }
 
-zend_module_entry festival_php_module_entry = {
+zend_module_entry festival_module_entry = {
 	STANDARD_MODULE_HEADER,
-	"festival_php",
-	festival_php_functions,
-        PHP_MINIT(festival_php), /* MINIT */
+	"festival",
+	festival_functions,
+        PHP_MINIT(festival), /* MINIT */
         NULL, /* MSHUTDOWN */
 	NULL,	/* RINIT */
 	NULL,   /* RSHUTDOWN */
-	PHP_MINFO(festival_php),
+	PHP_MINFO(festival),
 	FESTIVAL_PHP_VERSION,
 	STANDARD_MODULE_PROPERTIES
 };
 
 
-#ifdef COMPILE_DL_FESTIVAL_PHP
+#ifdef COMPILE_DL_FESTIVAL
 BEGIN_EXTERN_C()
-ZEND_GET_MODULE(festival_php)
+ZEND_GET_MODULE(festival)
 END_EXTERN_C()
 #endif
 /*

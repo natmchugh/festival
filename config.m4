@@ -4,7 +4,7 @@ dnl
 
 PHP_ARG_ENABLE(festival,
 [whether to enable the "festival" extension],
-[  --enable-festival_php [=DIR]       Enable "festival" support])
+[  --enable-festival[=DIR]       Enable "festival" support])
 
 PHP_ARG_WITH(speech-tools-dir,  for festival,
 [  --with-speech-tools-dir[=DIR]   Set the path to Edinburgh Speech tools install prefix.], yes)
@@ -43,19 +43,19 @@ if test -z "$FESTIVAL_DIR"; then
 	AC_MSG_ERROR(festival.h $FESTIVAL_DIR not found)
 else
 	PHP_ADD_INCLUDE($FESTIVAL_INC_DIR)
-	PHP_ADD_LIBRARY_WITH_PATH(Festival, $FESTIVAL_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(Festival, $FESTIVAL_DIR/lib, FESTIVAL_SHARED_LIBADD)
 fi
 
 if test -z "$EST_DIR"; then
 	AC_MSG_ERROR(EST.h not found)
 else
 	PHP_ADD_INCLUDE($EST_DIR/include)
-	PHP_ADD_LIBRARY_WITH_PATH(estbase, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
-	PHP_ADD_LIBRARY_WITH_PATH(estools, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
-	PHP_ADD_LIBRARY_WITH_PATH(eststring, $EST_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(estbase, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(estools, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
+	PHP_ADD_LIBRARY_WITH_PATH(eststring, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
 fi
 
- PHP_SUBST(FESTIVAL_PHP_SHARED_LIBADD)
+ PHP_SUBST(FESTIVAL_SHARED_LIBADD)
  PHP_REQUIRE_CXX()
- PHP_ADD_LIBRARY(stdc++, "", FESTIVAL_PHP_SHARED_LIBADD) 
- PHP_NEW_EXTENSION(festival_php, festival_php.cpp, $ext_shared)
+ PHP_ADD_LIBRARY(stdc++, "", FESTIVAL_SHARED_LIBADD) 
+ PHP_NEW_EXTENSION(festival, festival_php.cpp, $ext_shared)
