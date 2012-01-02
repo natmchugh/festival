@@ -13,9 +13,14 @@ if test "$PHP_FESTIVAL" != "no"; then
 	AC_MSG_CHECKING([for festival headers])
 	for i in /usr /usr/lib $PHP_FESTIVAL; do 
 		AC_MSG_CHECKING([looking in $i])
-dnl hmmm sometimes its /includefestival sometimes it /include
+dnl hmmm sometimes its /include/festival sometimes it /include
 		if test -r $i/include/festival/festival.h; then
 			FESTIVAL_DIR=$i
+			FESTIVAL_INC_DIR=$FESTIVAL_DIR/include/festival
+			AC_MSG_RESULT(found festival.h in $i)
+		elif test -r $i/include/festival.h; then
+			FESTIVAL_DIR=$i
+			FESTIVAL_INC_DIR=$FESTIVAL_DIR/include
 			AC_MSG_RESULT(found festival.h in $i)
 		fi
 	done
@@ -37,7 +42,7 @@ fi
 if test -z "$FESTIVAL_DIR"; then
 	AC_MSG_ERROR(festival.h $FESTIVAL_DIR not found)
 else
-	PHP_ADD_INCLUDE($FESTIVAL_DIR/include/festival)
+	PHP_ADD_INCLUDE($FESTIVAL_INC_DIR)
 	PHP_ADD_LIBRARY_WITH_PATH(Festival, $FESTIVAL_DIR/lib, FESTIVAL_PHP_SHARED_LIBADD)
 fi
 
