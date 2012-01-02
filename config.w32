@@ -1,8 +1,10 @@
 // vim:ft=javascript
 
-ARG_ENABLE("festival_php", "Enable festival support", "no");
+ARG_ENABLE("festival", "Enable festival support", "no");
 
-if (PHP_HELLO_WORLD != "no") {
-	EXTENSION("ifestival_php", "festival_php.cpp");
-	AC_DEFINE('HAVE_FESTIVA_PHP', 1, 'festival support');
+if (PHP_FESTIVAL != "no") {
+	EXTENSION("festival", "festival_php.cpp");
+	// err add some ADD_SOURCES when have access to windows and can work  
+	// out the locations
+	AC_DEFINE('HAVE_FESTIVAL', 1, 'festival support');
 }
