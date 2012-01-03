@@ -33,7 +33,7 @@ using namespace std;
 
 /* {{{ proto resource festival_say_text()
    Says the passed in text  */
-PHP_METHOD(Festival_FestivalClass, sayText)
+PHP_METHOD(festival, sayText)
 {
 char * text = NULL;
 int    text_len = 0;
@@ -50,7 +50,7 @@ long   count = 1;
 
 /* {{{ proto resource festival_say_file()
    Says the passed in text  */
-PHP_METHOD(Festival_FestivalClass, sayFile)
+PHP_METHOD(festival, sayFile)
 {
 char * filename = NULL;
 int    filename_len = 0;
@@ -69,7 +69,7 @@ RETURN_TRUE;
 
 /* {{{ proto resource festival_say_file()
          Says the passed in text  */
-PHP_METHOD(Festival_FestivalClass, textToWave)
+PHP_METHOD(festival, textToWave)
 {
 char * text = NULL;
 int    text_len = 0;
@@ -88,7 +88,7 @@ RETVAL_STRING(filename, 1);
 }
 /* }}} */
 
-PHP_METHOD(Festival_FestivalClass, __construct) {
+PHP_METHOD(festival, __construct) {
 bool load_init_files = TRUE;
 int load_init_files_len = 0;
 int heap_size = 210000;
@@ -105,7 +105,7 @@ long   count = 1;
 
 /* {{{ proto resource evalCommand
       */
-PHP_METHOD(Festival_FestivalClass, evalCommand)
+PHP_METHOD(festival, evalCommand)
 {
 char * command = NULL;
 int    command_len = 0;
@@ -143,13 +143,13 @@ PHP_MINFO_FUNCTION(festival)
 }
 
 zend_class_entry *php_festival_fc_entry;
-#define PHP_FESTIVAL_FC_NAME "Festival_FestivalClass"
+#define PHP_FESTIVAL_FC_NAME "festival"
 static zend_function_entry php_festival_fc_functions [] = {
-      PHP_ME(Festival_FestivalClass, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-      PHP_ME(Festival_FestivalClass, sayText, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(Festival_FestivalClass, sayFile, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(Festival_FestivalClass, textToWave, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(Festival_FestivalClass, evalCommand, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+      PHP_ME(festival, sayText, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, sayFile, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, textToWave, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, evalCommand, NULL, ZEND_ACC_PUBLIC)
       {NULL, NULL, NULL}
 };
 
