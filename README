@@ -12,5 +12,6 @@ sudo make install
 
 Usage
 ----------------------------
-$festObj = new Festival_FestivalClass();
+$festObj = new festival();
+$festObj->sayText('hello world');
 $festObj->sayText('php '.phpversion());
