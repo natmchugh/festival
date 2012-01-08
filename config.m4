@@ -26,15 +26,23 @@ dnl hmmm sometimes its /include/festival sometimes it /include
 	done
 fi
 if test "$PHP_SPEECH_TOOLS_DIR" != "no" && test "$PHP_SPEECH_TOOLS_DIR" != "yes"; then
+		AC_MSG_CHECKING([path given $PHP_SPEECH_TOOLS_DIR])
 	if test -r $PHP_SPEECH_TOOLS_DIR/include/EST.h; then
 		EST_DIR=$PHP_SPEECH_TOOLS_DIR
 	fi
 else
 	AC_MSG_CHECKING([for EST headers])
-	for i in /usr /usr/lib /usr/lib/speech_tools ; do 
+	for i in /usr /usr/lib ; do 
+		AC_MSG_CHECKING([looking in $i])
 		if test -r $i/include/EST.h; then
 			EST_DIR=$i
+			EST_INC_DIR=$EST_DIR/include
 			AC_MSG_RESULT(found EST in $i)
+		elif test -r $i/include/speech_tools/EST.h; then
+                        EST_DIR=$i
+			EST_INC_DIR=$EST_DIR/include/speech_tools
+                        AC_MSG_RESULT(found EST in $i)
+
 		fi
 	done
 fi		
@@ -49,7 +57,7 @@ fi
 if test -z "$EST_DIR"; then
 	AC_MSG_ERROR(EST.h not found)
 else
-	PHP_ADD_INCLUDE($EST_DIR/include)
+	PHP_ADD_INCLUDE($EST_INC_DIR)
 	PHP_ADD_LIBRARY_WITH_PATH(estbase, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
 	PHP_ADD_LIBRARY_WITH_PATH(estools, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
 	PHP_ADD_LIBRARY_WITH_PATH(eststring, $EST_DIR/lib, FESTIVAL_SHARED_LIBADD)
