@@ -125,9 +125,37 @@ RETURN_TRUE;
 }
 /* }}} */
 
+PHP_METHOD(festival, __destruct)
+{
+	festival_tidy_up();
+}
 
-ZEND_BEGIN_ARG_INFO_EX(festival_args, 0, 0, 0)
+
+ZEND_BEGIN_ARG_INFO_EX(festival_empty_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(festival_constructor_args, 0, 0, 0)
+  ZEND_ARG_INFO(0, load_init_files)
+  ZEND_ARG_INFO(0, heap_size)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(festival_saytext_args, 0)
+  ZEND_ARG_INFO(0, text)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(festival_sayfile_args, 0)
+  ZEND_ARG_INFO(0, filename)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(festival_textwave_args, 0)
+  ZEND_ARG_INFO(0, text)
+  ZEND_ARG_INFO(0, filename)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO(festival_evalcommand_args, 0)
+  ZEND_ARG_INFO(0, command)
+ZEND_END_ARG_INFO()
+
 
 static zend_function_entry festival_functions[] = {
 	{NULL, NULL, NULL}
@@ -145,13 +173,15 @@ PHP_MINFO_FUNCTION(festival)
 zend_class_entry *php_festival_fc_entry;
 #define PHP_FESTIVAL_FC_NAME "festival"
 static zend_function_entry php_festival_fc_functions [] = {
-      PHP_ME(festival, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-      PHP_ME(festival, sayText, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(festival, sayFile, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(festival, textToWave, NULL, ZEND_ACC_PUBLIC)
-      PHP_ME(festival, evalCommand, NULL, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, __construct, festival_constructor_args, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+      PHP_ME(festival, __destruct, festival_empty_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+      PHP_ME(festival, sayText, festival_saytext_args, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, sayFile, festival_sayfile_args, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, textToWave, festival_textwave_args, ZEND_ACC_PUBLIC)
+      PHP_ME(festival, evalCommand, festival_evalcommand_args, ZEND_ACC_PUBLIC)
       {NULL, NULL, NULL}
 };
+
 
 PHP_MINIT_FUNCTION(festival)
 {
