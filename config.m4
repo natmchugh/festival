@@ -66,4 +66,4 @@ fi
  PHP_SUBST(FESTIVAL_SHARED_LIBADD)
  PHP_REQUIRE_CXX()
  PHP_ADD_LIBRARY(stdc++, "", FESTIVAL_SHARED_LIBADD) 
- PHP_NEW_EXTENSION(festival, festival_php.cpp, $ext_shared)
+ PHP_NEW_EXTENSION(festival, festival_php.cc, $ext_shared)

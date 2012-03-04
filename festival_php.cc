@@ -12,7 +12,7 @@
    | obtain it through the world-wide-web, please send a note to          |
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
-   | Author: Nathaniel McHugh nat@fishtrap.co.uk			  |
+   | Author: Nathaniel McHugh nat@fishtrap.co.uk			                    |
    +----------------------------------------------------------------------+
  */
 
@@ -20,19 +20,41 @@
 #include "config.h"
 #endif
 
+extern "C" {
 #include "php.h"
+#include "festival_php.h"
 #include "ext/standard/info.h"
 #include "php_open_temporary_file.h"
-extern "C" {
-#include "festival_php.h"
 }
+
 #include<festival.h>
-using namespace std;
 
+/* {{{ proto void Festival::__constuct([ bool load_init_files [, int heap_size]])
+*/
+PHP_METHOD(festival, __construct) {
+bool load_init_files = TRUE;
+int load_init_files_len = 0;
+int heap_size = 210000;
+int   heap_size_len = 0;
+long   count = 1;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &load_init_files, &load_init_files_len, &heap_size, &heap_size_len, &count) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
+        RETURN_FALSE;
+    }
+    festival_initialize(load_init_files,heap_size);
+}
+/* }}} */
 
+/* {{{ proto void Festival::__destruct()
+*/
+PHP_METHOD(festival, __destruct)
+{
+  festival_tidy_up();
+}
+/* }}} */
 
-/* {{{ proto resource festival_say_text()
-   Says the passed in text  */
+/* {{{ proto resource Festival::sayText(string text)
+*/
 PHP_METHOD(festival, sayText)
 {
 char * text = NULL;
@@ -43,13 +65,13 @@ long   count = 1;
         php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
         RETURN_FALSE;
     }
-	festival_say_text(text);
-	RETURN_TRUE;
+  festival_say_text(text);
+  RETURN_TRUE;
 }
 /* }}} */
 
-/* {{{ proto resource festival_say_file()
-   Says the passed in text  */
+/* {{{ proto bool Festival::sayFile(string filename)
+*/
 PHP_METHOD(festival, sayFile)
 {
 char * filename = NULL;
@@ -67,8 +89,8 @@ RETURN_TRUE;
 }
 /* }}} */
 
-/* {{{ proto resource festival_say_file()
-         Says the passed in text  */
+/* {{{ proto string Festival::textToWave(string text)
+*/
 PHP_METHOD(festival, textToWave)
 {
 char * text = NULL;
@@ -88,23 +110,9 @@ RETVAL_STRING(filename, 1);
 }
 /* }}} */
 
-PHP_METHOD(festival, __construct) {
-bool load_init_files = TRUE;
-int load_init_files_len = 0;
-int heap_size = 210000;
-int   heap_size_len = 0;
-long   count = 1;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &load_init_files, &load_init_files_len, &heap_size, &heap_size_len, &count) == FAILURE) {
-        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid arguments!");
-        RETURN_FALSE;
-    }
-    festival_initialize(load_init_files,heap_size);
-}
 
-
-
-/* {{{ proto resource evalCommand
-      */
+/* {{{ proto bool Festival::evalCommand(string command)
+*/
 PHP_METHOD(festival, evalCommand)
 {
 char * command = NULL;
@@ -121,14 +129,9 @@ strcat (est_str,command);
 strcat (est_str,")");
 festival_eval_command(est_str);
 RETURN_TRUE;
-/* return; */
 }
 /* }}} */
 
-PHP_METHOD(festival, __destruct)
-{
-	festival_tidy_up();
-}
 
 
 ZEND_BEGIN_ARG_INFO_EX(festival_empty_args, 0, 0, 0)
@@ -158,16 +161,16 @@ ZEND_END_ARG_INFO()
 
 
 static zend_function_entry festival_functions[] = {
-	{NULL, NULL, NULL}
+  {NULL, NULL, NULL}
 };
 
 PHP_MINFO_FUNCTION(festival)
 {
-	char version[256];
-	php_info_print_table_start();
-	php_info_print_table_header(2, "festival support", "enabled");
-	php_info_print_table_row(2, "version", FESTIVAL_PHP_VERSION);
-	php_info_print_table_end();
+  char version[256];
+  php_info_print_table_start();
+  php_info_print_table_header(2, "festival support", "enabled");
+  php_info_print_table_row(2, "version", FESTIVAL_PHP_VERSION);
+  php_info_print_table_end();
 }
 
 zend_class_entry *php_festival_fc_entry;
@@ -194,29 +197,20 @@ PHP_MINIT_FUNCTION(festival)
 }
 
 zend_module_entry festival_module_entry = {
-	STANDARD_MODULE_HEADER,
-	"festival",
-	festival_functions,
-        PHP_MINIT(festival), /* MINIT */
-        NULL, /* MSHUTDOWN */
-	NULL,	/* RINIT */
-	NULL,   /* RSHUTDOWN */
-	PHP_MINFO(festival),
-	FESTIVAL_PHP_VERSION,
-	STANDARD_MODULE_PROPERTIES
+  STANDARD_MODULE_HEADER,
+  "festival",
+  festival_functions,
+  PHP_MINIT(festival), /* MINIT */
+  NULL, /* MSHUTDOWN */
+  NULL, /* RINIT */
+  NULL,   /* RSHUTDOWN */
+  PHP_MINFO(festival),
+  FESTIVAL_PHP_VERSION,
+  STANDARD_MODULE_PROPERTIES
 };
-
 
 #ifdef COMPILE_DL_FESTIVAL
 BEGIN_EXTERN_C()
 ZEND_GET_MODULE(festival)
 END_EXTERN_C()
 #endif
-/*
- * Local variables:
- * c-basic-offset: 4
- * tab-width: 4
- * End:
- * vim600: fdm=marker
- * vim: sw=4 ts=4 noet
- */

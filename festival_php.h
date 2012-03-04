@@ -19,18 +19,10 @@
 #ifndef __FESTIVAL_PHP_H
 #define __FESTIVAL_PHP_H
 
-#define FESTIVAL_PHP_VERSION "0.2.0"
+#define FESTIVAL_PHP_VERSION "0.3.0"
 
+#include "php.h"
 extern zend_module_entry festival_module_entry;
-PHP_MINFO_FUNCTION(festival);
+
 
 #endif /* __FESTIVAL_PHP_H */
-
-/*
- * Local variables:
- * c-basic-offset: 4
- * tab-width: 4
- * End:
- * vim600: fdm=marker
- * vim: sw=4 ts=4 noet
- */
